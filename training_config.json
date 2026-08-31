@@ -1,0 +1,27 @@
+{
+  "model_type": "DecoderOnlyTransformer",
+  "vocab_size": 15698,
+  "d_model": 256,
+  "seq_len": 256,
+  "num_blocks": 4,
+  "num_heads": 8,
+  "d_ff": 1024,
+  "dropout": 0.1,
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "batch_size": 32,
+  "epochs": 3,
+  "seed": 42,
+  "task": "autoregressive_language_modeling",
+  "language": "English",
+  "data_split": {
+    "train_sequences": 20358,
+    "validation_sequences": 2262
+  },
+  "requirements": [
+    "standalone notebook",
+    "no repo dependency",
+    "next-token prediction task"
+  ],
+  "device": "cpu"
+}
