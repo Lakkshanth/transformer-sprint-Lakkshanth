@@ -1,0 +1,343 @@
+# Transform Sprint — English Autoregressive Language Model
+
+A compact decoder-only Transformer language model trained from random initialization for autoregressive English language modeling using the Helsinki-NLP Opus Books dataset.
+
+## Overview
+
+This project implements a decoder-only Transformer from scratch and covers the complete workflow:
+
+- Dataset collection and preprocessing
+- Train/validation splitting
+- Custom word-level tokenizer
+- Causal self-attention
+- Transformer decoder blocks
+- Autoregressive next-token prediction
+- Model training and validation
+- Text generation
+- Model and tokenizer saving
+- Model reload verification
+- SHA-256 artifact verification
+
+## Objectives
+
+The main objectives are to:
+
+1. Build a decoder-only Transformer from random initialization.
+2. Train the model for autoregressive English language modeling.
+3. Train a tokenizer using only the training data.
+4. Verify train/validation split integrity.
+5. Capture training and validation losses.
+6. Generate text using the trained model.
+7. Save and reload the trained artifacts.
+8. Verify reproducibility using SHA-256 hashes.
+
+## Dataset
+
+The project uses the English portion of the Helsinki-NLP Opus Books dataset.
+
+| Property | Value |
+|---|---:|
+| Dataset | Helsinki-NLP Opus Books |
+| Configuration | `en-it` |
+| Language | English |
+| Raw records | 32,332 |
+| Cleaned records | 14,973 |
+| Rejected records | 17,359 |
+| Training records | 13,475 |
+| Validation records | 1,498 |
+| Test records | 0 |
+| Total tokens | 697,491 |
+| Vocabulary size | 13,293 |
+| Unknown-token rate | 2.19% |
+| Exact train/validation overlap | 0 |
+
+## Data Preprocessing
+
+The preprocessing pipeline performs:
+
+1. English text extraction from the dataset.
+2. Removal of empty records.
+3. Removal of texts containing fewer than 20 words.
+4. Case-insensitive exact duplicate detection.
+5. 90/10 training-validation splitting.
+6. Verification that no exact records overlap between the training and validation sets.
+
+A lightweight near-duplicate spot check was performed on 50 validation samples and produced 0/50 hits (0.00%).
+
+## Tokenizer
+
+A custom WordLevel tokenizer is trained using the training split only.
+
+### Special Tokens
+
+- `[UNK]`
+- `[PAD]`
+- `[SOS]`
+- `[EOS]`
+
+### Tokenizer Configuration
+
+| Property | Value |
+|---|---:|
+| Tokenizer | WordLevel |
+| Pre-tokenizer | Whitespace |
+| Minimum frequency | 2 |
+| Vocabulary size | 13,293 |
+| Validation unknown-token rate | 2.19% |
+
+The tokenizer is saved as `tokenizer_bundle.json`.
+
+## Model Architecture
+
+The model is a decoder-only Transformer implemented using PyTorch.
+
+### Architecture Components
+
+- Token embeddings
+- Sinusoidal positional encoding
+- Multi-head self-attention
+- Causal attention masking
+- Feed-forward networks
+- Layer normalization
+- Residual connections
+- Dropout
+- Vocabulary projection layer
+
+### Model Configuration
+
+| Parameter | Value |
+|---|---:|
+| Architecture | Decoder-only Transformer |
+| Initialization | Random |
+| Model dimension | 256 |
+| Transformer blocks | 4 |
+| Attention heads | 8 |
+| Feed-forward dimension | 1024 |
+| Sequence length | 128 |
+| Dropout | 0.1 |
+| Vocabulary size | 13,293 |
+| Total parameters | 9,978,861 |
+
+## Training
+
+The model is trained using autoregressive next-token prediction. For each sequence, the input tokens are shifted against the target tokens so that the model learns to predict the next token.
+
+### Training Configuration
+
+| Parameter | Value |
+|---|---:|
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Epochs | 3 |
+| Batch size | 64 |
+| Sequence length | 128 |
+| Device | CUDA |
+| Mixed precision | Enabled |
+| Mixed precision dtype | bfloat16 |
+| Gradient clipping | 1.0 |
+| Random seed | 42 |
+| Training steps | 633 |
+
+## Results
+
+### Training and Validation Loss
+
+| Epoch | Training Loss | Validation Loss |
+|---:|---:|---:|
+| 1 | 6.0741 | 5.3467 |
+| 2 | 5.2509 | 5.1126 |
+| 3 | 4.9740 | 5.0042 |
+
+### Final Results
+
+- Final training loss: **4.9740**
+- Final validation loss: **5.0042**
+- Total training steps: **633**
+- Model parameters: **9,978,861**
+
+The training and validation losses decreased throughout the three training epochs.
+
+## Text Generation
+
+The trained model was evaluated using the following prompt:
+
+> The old house was filled with memories
+
+The model uses greedy decoding to select the next token.
+
+### Generated Output
+
+```text
+The old house was filled with memories , and the of the , and the , and the , and the , and the , and the , and the
+```
+
+The generated output demonstrates that the model learned to continue the input sequence, but the strong repetition indicates limitations caused by the compact model size, training budget, and greedy decoding strategy.
+
+## Reproducibility
+
+The project uses a fixed random seed of `42` for Python, NumPy, and PyTorch.
+
+The main artifacts generated by the project are:
+
+- `final_model.pt`
+- `tokenizer_bundle.json`
+- `training_config.json`
+- `report.md`
+
+The trained model and tokenizer are reloaded after training and tested using a forward pass.
+
+The reload verification produced:
+
+```text
+Logits shape: (1, 7, 13293)
+```
+
+This verifies that the saved model and tokenizer can be successfully reconstructed and used after training.
+
+## Artifact Verification
+
+SHA-256 hashes are generated for the project artifacts to support integrity and reproducibility.
+
+The main saved artifacts are:
+
+| Artifact | Description |
+|---|---|
+| `final_model.pt` | Trained Transformer model parameters |
+| `tokenizer_bundle.json` | Trained WordLevel tokenizer |
+| `training_config.json` | Model and training configuration |
+| `report.md` | Training and evaluation report |
+| `transform_sprint_Lakkshanth_final_UPDATED_v2.ipynb` | Complete executed notebook |
+
+The `final_model.pt` file is managed using Git LFS because of its size.
+
+## Project Structure
+
+```text
+transformer-sprint/
+│
+├── README.md
+├── transform_sprint_Lakkshanth_final_UPDATED_v2.ipynb
+├── final_model.pt
+├── tokenizer_bundle.json
+├── training_config.json
+└── report.md
+```
+
+## Installation
+
+Install the required Python packages:
+
+```bash
+pip install torch numpy datasets tokenizers
+```
+
+For GPU training, use a PyTorch installation compatible with your CUDA environment.
+
+## Usage
+
+### Google Colab
+
+The notebook is designed to run in Google Colab with GPU acceleration.
+
+Open the notebook and run the cells sequentially from the beginning.
+
+The workflow is:
+
+```text
+Dataset
+   ↓
+Preprocessing
+   ↓
+Tokenizer
+   ↓
+Transformer
+   ↓
+Training
+   ↓
+Evaluation
+   ↓
+Text Generation
+   ↓
+Artifact Saving
+   ↓
+Reload Verification
+```
+
+### Local Execution
+
+The core implementation can also be adapted for a local Python environment with the required dependencies installed.
+
+GPU acceleration is recommended for faster training.
+
+## Limitations
+
+### 1. Word-Level Tokenization
+
+The project uses a word-level tokenizer rather than a subword tokenizer. Rare and unseen words can therefore result in `[UNK]` tokens.
+
+The measured validation unknown-token rate was **2.19%**.
+
+### 2. Compact Model
+
+The model contains approximately 10 million parameters and is significantly smaller than modern large language models.
+
+### 3. Limited Training
+
+The model was trained for only three epochs using a relatively compact dataset and architecture.
+
+### 4. No Dedicated Test Set
+
+The experiment uses training and validation sets but does not include a separate held-out test set.
+
+### 5. Lightweight Near-Duplicate Check
+
+The near-duplicate analysis is a spot check over 50 validation examples rather than a comprehensive similarity analysis.
+
+### 6. Greedy Decoding
+
+The generation process uses greedy decoding, which can contribute to repetitive text generation.
+
+## Future Work
+
+Possible improvements include:
+
+- Increasing the size and diversity of the training corpus
+- Training for more epochs or steps
+- Increasing model capacity
+- Using a subword tokenizer such as BPE
+- Increasing the context length
+- Adding a dedicated test set
+- Applying learning-rate scheduling
+- Exploring temperature, top-k, and top-p sampling
+- Performing more comprehensive text-generation evaluation
+- Improving near-duplicate detection
+
+## Acknowledgements
+
+This project uses:
+
+- Helsinki-NLP Opus Books for the English text corpus
+- Hugging Face Datasets for dataset loading
+- Hugging Face Tokenizers for tokenizer construction
+- PyTorch for model implementation and training
+- Google Colab for GPU-accelerated execution
+
+## Author
+
+**Lakkshanth R**
+
+Transform Sprint 2026
+
+## Project Status
+
+**Status:** Completed experimental training run
+
+**Model:** Decoder-only Transformer
+
+**Task:** Autoregressive English Language Modeling
+
+**Training:** Completed
+
+**Model Reload Verification:** Passed
+
+**Artifact Verification:** Completed
