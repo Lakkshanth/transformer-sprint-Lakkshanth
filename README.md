@@ -1,4 +1,4 @@
-# Transform Sprint — English Autoregressive Language Model
+# Transformer Sprint — English Autoregressive Language Model
 
 A compact decoder-only Transformer language model trained from random initialization for autoregressive English language modeling using the Helsinki-NLP Opus Books dataset.
 
@@ -326,7 +326,7 @@ This project uses:
 
 **Lakkshanth R**
 
-Transform Sprint 2026
+Transformer Sprint 2026
 
 ## Project Status
 
