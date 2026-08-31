@@ -1,0 +1,38 @@
+[
+  {
+    "kind": "notebook",
+    "filename": "transform_sprint_Lakkshanth_final.ipynb",
+    "size_bytes": 14955,
+    "sha256": "b2ca58ef24c849f4dd7b0fcc1176fbddd9e89a8bfbeefddcd844663e423e8caa"
+  },
+  {
+    "kind": "model",
+    "filename": "final_model.pt",
+    "size_bytes": 97444597,
+    "sha256": "d1e3512501be80ee9723e6f19df3f2e6e2f68a99f6eecc2da685817704e1fe11"
+  },
+  {
+    "kind": "config",
+    "filename": "training_config.json",
+    "size_bytes": 559,
+    "sha256": "84e32fbe322d9b755e9673c6b72e224bf380929085fb9d172db57de78f915014"
+  },
+  {
+    "kind": "report",
+    "filename": "submission_report.md",
+    "size_bytes": 4037,
+    "sha256": "8b63c673a75a72a223e973d10cf602a162c707a756bee464f9bce98ed7df7c8c"
+  },
+  {
+    "kind": "tokenizer",
+    "filename": "tokenizer_bundle.json",
+    "size_bytes": 997481,
+    "sha256": "23a99c85035af29f5c50e0062278a5931c88f1f6d2d166c42938be5fbe82080f"
+  },
+  {
+    "kind": "verification",
+    "filename": "reload_verification_cell.py",
+    "size_bytes": 386,
+    "sha256": "5fae9c12bf0c161f2a148a486dd85e98e4c0faf42fc531334ca240d7b10f16a6"
+  }
+]
